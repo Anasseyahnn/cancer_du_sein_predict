@@ -1,4 +1,4 @@
-# Diagnostic du Cancer du Sein Predictor
+# Application Cancer du Sein Predictor
 ## Description du Projet
 L'application Diagnostic du Cancer du Sein Predictor est un outil convivial basé sur Streamlit qui permet aux utilisateurs de prédire le diagnostic d'une tumeur mammaire (maligne ou bénigne) en utilisant des données cliniques. Cette application s'appuie sur un modèle pré-entraîné de machine learning pour fournir des prédictions fiables et rapides.
 
