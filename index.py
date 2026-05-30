@@ -406,35 +406,35 @@ def main():
                 <div class="feature-grid">
                     <div class="feature-card">
                         <div class="feature-card-title">Rayon (Radius)</div>
-                        <div class="feature-card-desc">Distance moyenne entre le centre du noyau et ses contours externes. Des noyaux plus grands suggèrent souvent une malignité.</div>
+                        <div class="feature-card-desc">Distance moyenne du centre aux contours externes du noyau.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Texture</div>
-                        <div class="feature-card-desc">Écart type de l'intensité des niveaux de gris de l'image, caractérisant la rugosité de la surface nucléaire.</div>
+                        <div class="feature-card-desc">Variabilité de l'intensité des niveaux de gris sur l'image.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Périmètre & Aire</div>
-                        <div class="feature-card-desc">Taille physique totale mesurée pour le contour et la surface occupée par le noyau cellulaire.</div>
+                        <div class="feature-card-desc">Mesures de la taille et de la surface du noyau cellulaire.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Lissage (Smoothness)</div>
-                        <div class="feature-card-desc">Degré de variation locale des rayons. Une surface irrégulière est caractéristique d'anomalies de croissance.</div>
+                        <div class="feature-card-desc">Degré de régularité et de lissage du contour nucléaire.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Compacité (Compactness)</div>
-                        <div class="feature-card-desc">Calculée à partir de la formule : <code>périmètre² / aire - 1.0</code>, mesurant la déformation ou la sphéricité.</div>
+                        <div class="feature-card-desc">Indice de déformation calculé selon le périmètre et l'aire.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Concavité & Points Concaves</div>
-                        <div class="feature-card-desc">Profondeur et fréquence des creux ou encoches dans le contour externe du noyau cellulaire.</div>
+                        <div class="feature-card-desc">Sévérité et nombre de creux identifiés sur le contour.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Symétrie</div>
-                        <div class="feature-card-desc">Alignement bilatéral et régularité spatiale du noyau par rapport à son axe de division.</div>
+                        <div class="feature-card-desc">Régularité spatiale bilatérale de la forme du noyau.</div>
                     </div>
                     <div class="feature-card">
                         <div class="feature-card-title">Dimension Fractale</div>
-                        <div class="feature-card-desc">Évaluation géométrique de la rugosité microscopique basée sur l'algorithme d'approximation des contours.</div>
+                        <div class="feature-card-desc">Complexité géométrique microscopique des contours cellulaires.</div>
                     </div>
                 </div>
             </div>
