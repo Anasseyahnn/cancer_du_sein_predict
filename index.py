@@ -21,6 +21,14 @@ def get_clean_data():
     
     return data
 
+# Initialisation de la session state pour chaque métrique si absente
+data = get_clean_data()
+for col in data.columns:
+    if col != 'diagnosis':
+        session_key = f"slider_{col}"
+        if session_key not in st.session_state:
+            st.session_state[session_key] = float(data[col].mean())
+
 # ----------------- SIDEBAR -----------------
 def add_sidebar():
     st.sidebar.markdown("""
@@ -29,8 +37,6 @@ def add_sidebar():
         <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">Paramètres des Nuclei</span>
     </div>
     """, unsafe_allow_html=True)
-    
-    data = get_clean_data()
     
     slider_labels = [
         ("Rayon (Moyenne)","radius_mean"),
@@ -65,28 +71,70 @@ def add_sidebar():
         ("Dim. Fractale (Pire)","fractal_dimension_worst"),
     ]
     
-    input_dict = {}
+    # Boutons d'exemples cliniques interactifs
+    st.sidebar.write("**Scénarios Cliniques Pré-chargés :**")
+    col_benign, col_malignant = st.sidebar.columns(2)
     
+    with col_benign:
+        if st.sidebar.button("Exemple Bénin 🛡️", use_container_width=True, key="side_btn_benign"):
+            benign_samples = data[data['diagnosis'] == 0]
+            if not benign_samples.empty:
+                sample = benign_samples.sample(1).iloc[0]
+                for col in data.columns:
+                    if col != 'diagnosis':
+                        st.session_state[f"slider_{col}"] = float(sample[col])
+                st.rerun()
+                
+    with col_malignant:
+        if st.sidebar.button("Exemple Malin ⚠️", use_container_width=True, key="side_btn_malignant"):
+            malignant_samples = data[data['diagnosis'] == 1]
+            if not malignant_samples.empty:
+                sample = malignant_samples.sample(1).iloc[0]
+                for col in data.columns:
+                    if col != 'diagnosis':
+                        st.session_state[f"slider_{col}"] = float(sample[col])
+                st.rerun()
+                
+    col_random, col_reset = st.sidebar.columns(2)
+    with col_random:
+        if st.sidebar.button("Échantillon Aléatoire 🎲", use_container_width=True, key="side_btn_random"):
+            sample = data.sample(1).iloc[0]
+            for col in data.columns:
+                if col != 'diagnosis':
+                    st.session_state[f"slider_{col}"] = float(sample[col])
+            st.rerun()
+            
+    with col_reset:
+        if st.sidebar.button("Moyennes 🔄", use_container_width=True, key="side_btn_reset"):
+            for col in data.columns:
+                if col != 'diagnosis':
+                    st.session_state[f"slider_{col}"] = float(data[col].mean())
+            st.rerun()
+            
+    st.sidebar.markdown("---")
+    
+    # Rendu des sliders dynamiques basés sur la session state
+    input_dict = {}
     for label, key in slider_labels:
+        session_key = f"slider_{key}"
         input_dict[key] = st.sidebar.slider(
             label, 
             min_value=float(0),
             max_value=float(data[key].max()),
-            value = float(data[key].mean())
+            value=st.session_state[session_key],
+            key=session_key
         )
         
     return input_dict
 
 # ----------------- NORMALISATION -----------------
 def get_scaled_values(input_dict):
-    data = get_clean_data()
     X = data.drop(["diagnosis"], axis = 1)
     
     scaled_dict = {}
     for key, value in input_dict.items():
         max_val = X[key].max()
         min_val = X[key].min()
-        # Éviter la division par zéro
         if max_val == min_val:
             scaled_value = 0.0
         else:
@@ -182,7 +230,7 @@ def add_predictions(input_data):
         model = pickle.load(open(model_path, "rb"))
         scaler = pickle.load(open(scaler_path, "rb"))
     except FileNotFoundError:
-        st.error("Les fichiers du modèle (model.pkl ou scaler.pkl) sont introuvables. Veuillez d'abord exécuter 'python cancer.py' pour entraîner le modèle.")
+        st.error("Les fichiers du modèle (model.pkl ou scaler.pkl) sont introuvables.")
         return
         
     input_array = np.array(list(input_data.values())).reshape(1,-1)
@@ -200,7 +248,7 @@ def add_predictions(input_data):
     </div>
     """, unsafe_allow_html=True)
     
-    # DIAGNOSTIC CORRIGÉ : prediction[0] == 1 signifie Tumeur Maligne
+    # DIAGNOSTIC CORRIGÉ
     if prediction[0] == 1:
         st.markdown(f"""
         <div class="diagnosis-card malicious">
@@ -218,14 +266,13 @@ def add_predictions(input_data):
     
     st.markdown("<div style='margin-top:20px;'></div>", unsafe_allow_html=True)
     
-    # Rendu des probabilités cliniques avec barres de progression
+    # Rendu des probabilités
     st.write(f"**Probabilité de tumeur bénigne :** {prob_benign:.2%}")
     st.progress(prob_benign)
     
     st.write(f"**Probabilité de tumeur maligne :** {prob_malignant:.2%}")
     st.progress(prob_malignant)
     
-    # Avertissement légal
     st.markdown("""
     <div style="background-color: rgba(217, 119, 6, 0.05); border: 1px solid rgba(217, 119, 6, 0.15); border-radius: 8px; padding: 12px; font-size: 0.8rem; color: #b45309; margin-top: 25px; line-height: 1.4;">
         <strong>Information Légale Clinique :</strong><br>
@@ -250,9 +297,6 @@ def main():
     except FileNotFoundError:
         pass
     
-    # Chargement de la sidebar
-    input_data = add_sidebar()
-    
     # En-tête principal de la page
     st.markdown("""
     <div style="display: flex; align-items: center; gap: 16px; margin-top: -30px; margin-bottom: 5px;">
@@ -272,29 +316,101 @@ def main():
     <hr>
     """, unsafe_allow_html=True)
     
-    st.markdown("""
-    <p style="font-size: 0.95rem; line-height: 1.6; color: #475569; margin-top: -10px; margin-bottom: 25px;">
-        Cette console clinique utilise une classification par <b>Régression Logistique</b> pour prédire si une tumeur mammaire est <b>bénigne</b> ou <b>maligne</b>. Les données sont issues de mesures d'aspiration à l'aiguille fine (FNA) de masses mammaires. Ajustez les curseurs dans le panneau latéral pour visualiser l'impact des mesures nucléaires sur le diagnostic.
-    </p>
-    """, unsafe_allow_html=True)
+    # Onglets d'utilisation
+    tab_single, tab_batch = st.tabs(["Diagnostic Individuel (FNA)", "Diagnostic en Lot (Fichier CSV)"])
     
-    # Division de l'espace principal
-    col_chart, col_pred = st.columns([5, 4])
-    
-    with col_chart:
+    with tab_single:
+        # Division de l'espace principal
+        col_chart, col_pred = st.columns([5, 4])
+        
+        # Chargement de la sidebar uniquement dans le mode individuel
+        input_data = add_sidebar()
+        
+        with col_chart:
+            st.markdown("""
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span style="font-size: 1.15rem; font-weight: 700; color: #1e293b;">Visualisation des Mesures Nucléaires (Échelle Normalisée)</span>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            radar_chart = get_radar_chart(input_data)
+            st.plotly_chart(radar_chart, use_container_width=True)
+            
+        with col_pred:
+            with st.container(border=True):
+                add_predictions(input_data)
+                
+    with tab_batch:
         st.markdown("""
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-            <span style="font-size: 1.15rem; font-weight: 700; color: #1e293b;">Visualisation des Mesures Nucléaires (Échelle Normalisée)</span>
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px; margin-bottom: 15px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span style="font-size: 1.25rem; font-weight: 700; color: #1e293b;">Téléverser un fichier patient en lot</span>
         </div>
+        <p style="font-size:0.9rem; color:#64748b; margin-top:-5px;">Importez un fichier CSV contenant les 30 mesures caractéristiques pour prédire en une seule fois les diagnostics de plusieurs patients.</p>
         """, unsafe_allow_html=True)
         
-        radar_chart = get_radar_chart(input_data)
-        st.plotly_chart(radar_chart, use_container_width=True)
+        uploaded_csv = st.file_uploader("Sélectionnez votre fichier CSV patient :", type="csv")
         
-    with col_pred:
-        with st.container(border=True):
-            add_predictions(input_data)
+        if uploaded_csv is not None:
+            try:
+                # Lire le CSV
+                input_df = pd.read_csv(uploaded_csv)
+                
+                # Charger le modèle et le scaler
+                model_path = os.path.join(BASE_DIR, "model.pkl")
+                scaler_path = os.path.join(BASE_DIR, "scaler.pkl")
+                model = pickle.load(open(model_path, "rb"))
+                scaler = pickle.load(open(scaler_path, "rb"))
+                
+                # Identifier les colonnes nécessaires (en ignorant d'éventuelles colonnes ID ou Diagnostic pré-existantes)
+                predict_cols = [c for c in input_df.columns if c not in ['id', 'diagnosis', 'Unnamed: 32']]
+                
+                # Vérifier que toutes les 30 caractéristiques requises sont présentes
+                required_cols = list(data.columns)
+                required_cols.remove('diagnosis')
+                
+                missing_cols = [c for c in required_cols if c not in input_df.columns]
+                
+                if missing_cols:
+                    st.error(f"Le fichier CSV importé est incomplet. Il manque les colonnes de mesures suivantes : {', '.join(missing_cols)}")
+                else:
+                    # Aligner les colonnes exactement dans le même ordre que pour l'entraînement
+                    X_batch = input_df[required_cols]
+                    
+                    # Normaliser et prédire
+                    X_batch_scaled = scaler.transform(X_batch)
+                    batch_predictions = model.predict(X_batch_scaled)
+                    batch_probs = model.predict_proba(X_batch_scaled)
+                    
+                    # Ajouter les colonnes de diagnostic
+                    output_df = input_df.copy()
+                    output_df['Diagnostic Prédiction'] = np.where(batch_predictions == 1, 'Maligne (Cancer)', 'Bénigne (Sain)')
+                    output_df['Confiance Tumeur Maligne'] = batch_probs[:, 1]
+                    output_df['Confiance Tumeur Bénigne'] = batch_probs[:, 0]
+                    
+                    st.success(f"Traitement terminé avec succès ! {len(output_df)} enregistrements analysés.")
+                    
+                    # Affichage des résultats
+                    st.write("**Résultats du Diagnostic en Lot :**")
+                    st.dataframe(output_df[['Diagnostic Prédiction', 'Confiance Tumeur Maligne', 'Confiance Tumeur Bénigne'] + required_cols[:5]], use_container_width=True)
+                    
+                    # Téléchargement du CSV enrichi
+                    csv_data = output_df.to_csv(index=False).encode('utf-8')
+                    st.download_button(
+                        label="Télécharger les diagnostics générés (CSV)",
+                        data=csv_data,
+                        file_name="diagnostics_patients_generes.csv",
+                        mime="text/csv"
+                    )
+            except Exception as e:
+                st.error(f"Une erreur est survenue lors de l'analyse du fichier CSV : {str(e)}")
             
     # Pied de page
     st.markdown("""
