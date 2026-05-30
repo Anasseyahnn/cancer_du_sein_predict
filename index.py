@@ -377,118 +377,114 @@ def main():
         col_left, col_right = st.columns([7, 5])
         
         with col_left:
-            st.markdown("""
-            <div class="presentation-section">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                    <span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Le Projet & Contexte Clinique</span>
-                </div>
-                <div class="clinical-info-box">
-                    <h3>Qu'est-ce que l'analyse par cytoponction (FNA) ?</h3>
-                    <p style="font-size: 0.88rem; line-height: 1.5; color: #475569; margin-bottom: 12px;">
-                        La cytoponction à l'aiguille fine (<b>Fine Needle Aspiration - FNA</b>) est une procédure de biopsie rapide et peu invasive consistant à prélever un échantillon de cellules directement dans une masse mammaire suspecte. 
-                    </p>
-                    <p style="font-size: 0.88rem; line-height: 1.5; color: #475569; margin-bottom: 0;">
-                        L'échantillon extrait est ensuite numérisé au microscope. Les images numériques des noyaux cellulaires sont traitées par ordinateur pour extraire <b>10 caractéristiques géométriques clés</b> (rayon, concavité, régularité, etc.). L'algorithme d'apprentissage automatique évalue ces mesures pour classer instantanément la tumeur comme bénigne ou maligne.
-                    </p>
-                </div>
-            </div>
-            
-            <div class="presentation-section">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    <span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Exploration des 10 Paramètres Biologiques</span>
-                </div>
-                <p style="font-size: 0.88rem; color: #475569; margin-top: -5px; margin-bottom: 15px;">
-                    Les mesures proviennent du jeu de données clinique mondialement reconnu <b>Wisconsin Breast Cancer Dataset (WBCD)</b>. Pour chaque échantillon de tumeur, l'ordinateur évalue la moyenne, l'erreur standard et la valeur extrême (pire cas) de ces 10 mesures, totalisant ainsi 30 variables :
-                </p>
-                
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-card-title">Rayon (Radius)</div>
-                        <div class="feature-card-desc">Distance moyenne du centre aux contours externes du noyau.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Texture</div>
-                        <div class="feature-card-desc">Variabilité de l'intensité des niveaux de gris sur l'image.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Périmètre & Aire</div>
-                        <div class="feature-card-desc">Mesures de la taille et de la surface du noyau cellulaire.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Lissage (Smoothness)</div>
-                        <div class="feature-card-desc">Degré de régularité et de lissage du contour nucléaire.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Compacité (Compactness)</div>
-                        <div class="feature-card-desc">Indice de déformation calculé selon le périmètre et l'aire.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Concavité & Points Concaves</div>
-                        <div class="feature-card-desc">Sévérité et nombre de creux identifiés sur le contour.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Symétrie</div>
-                        <div class="feature-card-desc">Régularité spatiale bilatérale de la forme du noyau.</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-card-title">Dimension Fractale</div>
-                        <div class="feature-card-desc">Complexité géométrique microscopique des contours cellulaires.</div>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown("""<div class="presentation-section">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+<span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Le Projet & Contexte Clinique</span>
+</div>
+<div class="clinical-info-box">
+<h3>Qu'est-ce que l'analyse par cytoponction (FNA) ?</h3>
+<p style="font-size: 0.88rem; line-height: 1.5; color: #475569; margin-bottom: 12px;">
+La cytoponction à l'aiguille fine (<b>Fine Needle Aspiration - FNA</b>) est une procédure de biopsie rapide et peu invasive consistant à prélever un échantillon de cellules directement dans une masse mammaire suspecte. 
+</p>
+<p style="font-size: 0.88rem; line-height: 1.5; color: #475569; margin-bottom: 0;">
+L'échantillon extrait est ensuite numérisé au microscope. Les images numériques des noyaux cellulaires sont traitées par ordinateur pour extraire <b>10 caractéristiques géométriques clés</b> (rayon, concavité, régularité, etc.). L'algorithme d'apprentissage automatique évalue ces mesures pour classer instantanément la tumeur comme bénigne ou maligne.
+</p>
+</div>
+</div>
+
+<div class="presentation-section">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+<span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Exploration des 10 Paramètres Biologiques</span>
+</div>
+<p style="font-size: 0.88rem; color: #475569; margin-top: -5px; margin-bottom: 15px;">
+Les mesures proviennent du jeu de données clinique mondialement reconnu <b>Wisconsin Breast Cancer Dataset (WBCD)</b>. Pour chaque échantillon de tumeur, l'ordinateur évalue la moyenne, l'erreur standard et la valeur extrême (pire cas) de ces 10 mesures, totalisant ainsi 30 variables :
+</p>
+
+<div class="feature-grid">
+<div class="feature-card">
+<div class="feature-card-title">Rayon (Radius)</div>
+<div class="feature-card-desc">Distance moyenne du centre aux contours externes du noyau.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Texture</div>
+<div class="feature-card-desc">Variabilité de l'intensité des niveaux de gris sur l'image.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Périmètre & Aire</div>
+<div class="feature-card-desc">Mesures de la taille et de la surface du noyau cellulaire.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Lissage (Smoothness)</div>
+<div class="feature-card-desc">Degré de régularité et de lissage du contour nucléaire.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Compacité (Compactness)</div>
+<div class="feature-card-desc">Indice de déformation calculé selon le périmètre et l'aire.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Concavité & Points Concaves</div>
+<div class="feature-card-desc">Sévérité et nombre de creux identifiés sur le contour.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Symétrie</div>
+<div class="feature-card-desc">Régularité spatiale bilatérale de la forme du noyau.</div>
+</div>
+<div class="feature-card">
+<div class="feature-card-title">Dimension Fractale</div>
+<div class="feature-card-desc">Complexité géométrique microscopique des contours cellulaires.</div>
+</div>
+</div>
+</div>""", unsafe_allow_html=True)
             
         with col_right:
-            st.markdown("""
-            <div class="presentation-section">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                    <span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Performance et Entraînement de l'IA</span>
-                </div>
-                
-                <div class="kpi-container">
-                    <div class="kpi-card">
-                        <div class="kpi-value">97,37%</div>
-                        <div class="kpi-label">Précision (Accuracy)</div>
-                        <div class="kpi-desc">Taux de réussite global du modèle sur des échantillons tests externes non vus lors de sa phase d'apprentissage.</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value emerald">95,83%</div>
-                        <div class="kpi-label">Sensibilité (Recall)</div>
-                        <div class="kpi-desc">Capacité du modèle à identifier les vrais cas positifs (tumeurs malignes), un critère majeur en dépistage clinique.</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value">98,25%</div>
-                        <div class="kpi-label">Spécificité</div>
-                        <div class="kpi-desc">Aptitude du modèle à diagnostiquer correctement les cas négatifs (tumeurs bénignes), évitant le sur-traitement.</div>
-                    </div>
-                    <div class="kpi-card">
-                        <div class="kpi-value rose">99,12%</div>
-                        <div class="kpi-label">ROC AUC</div>
-                        <div class="kpi-desc">Aire sous la courbe ROC, mesurant le pouvoir de discrimination probabiliste entre cellules saines et cancéreuses.</div>
-                    </div>
-                </div>
-                
-                <div class="clinical-info-box" style="border-left-color: #e11d48;">
-                    <h3>Détails Techniques du Modèle</h3>
-                    <p style="font-size: 0.8rem; line-height: 1.5; color: #475569; margin-bottom: 0;">
-                        L'algorithme utilisé est une <b>Régression Logistique</b> (L2 Regularization), entraîné avec Scikit-Learn.
-                        Toutes les variables sont normalisées via standardisation (z-score) pour pallier les disparités physiques d'échelle (ex: aires nucléaires pouvant atteindre plus de 1000 µm² versus dimensions fractales inférieures à 0.1).
-                    </p>
-                </div>
-                
-                <div class="clinical-info-box" style="border-left-color: #059669; margin-bottom: 0;">
-                    <h3>Comment démarrer l'exploration ?</h3>
-                    <ul style="font-size: 0.8rem; line-height: 1.5; color: #475569; padding-left: 18px; margin-bottom: 0; margin-top: 5px;">
-                        <li style="margin-bottom: 4px;">Naviguez vers l'onglet <b>Diagnostic Individuel</b> pour ajuster les 30 curseurs de mesures cellulaires.</li>
-                        <li style="margin-bottom: 4px;">Utilisez l'un des <b>presets de la console</b> à gauche ("Exemple Bénin", "Exemple Malin") pour importer en un clic des profils patients réels.</li>
-                        <li>Sélectionnez l'onglet <b>Diagnostic en Lot</b> pour soumettre directement un fichier de données CSV complet et en extraire le diagnostic groupé.</li>
-                    </ul>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown("""<div class="presentation-section">
+<div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; margin-top: 5px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+<span style="font-size: 1.25rem; font-weight: 800; color: #0f172a;">Performance et Entraînement de l'IA</span>
+</div>
+
+<div class="kpi-container">
+<div class="kpi-card">
+<div class="kpi-value">97,37%</div>
+<div class="kpi-label">Précision (Accuracy)</div>
+<div class="kpi-desc">Taux de réussite global du modèle sur des échantillons tests externes non vus lors de sa phase d'apprentissage.</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value emerald">95,83%</div>
+<div class="kpi-label">Sensibilité (Recall)</div>
+<div class="kpi-desc">Capacité du modèle à identifier les vrais cas positifs (tumeurs malignes), un critère majeur en dépistage clinique.</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value">98,25%</div>
+<div class="kpi-label">Spécificité</div>
+<div class="kpi-desc">Aptitude du modèle à diagnostiquer correctement les cas négatifs (tumeurs bénignes), évitant le sur-traitement.</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-value rose">99,12%</div>
+<div class="kpi-label">ROC AUC</div>
+<div class="kpi-desc">Aire sous la courbe ROC, mesurant le pouvoir de discrimination probabiliste entre cellules saines et cancéreuses.</div>
+</div>
+</div>
+
+<div class="clinical-info-box" style="border-left-color: #e11d48;">
+<h3>Détails Techniques du Modèle</h3>
+<p style="font-size: 0.8rem; line-height: 1.5; color: #475569; margin-bottom: 0;">
+L'algorithme utilisé est une <b>Régression Logistique</b> (L2 Regularization), entraîné avec Scikit-Learn.
+Toutes les variables sont normalisées via standardisation (z-score) pour pallier les disparités physiques d'échelle (ex: aires nucléaires pouvant atteindre plus de 1000 µm² versus dimensions fractales inférieures à 0.1).
+</p>
+</div>
+
+<div class="clinical-info-box" style="border-left-color: #059669; margin-bottom: 0;">
+<h3>Comment démarrer l'exploration ?</h3>
+<ul style="font-size: 0.8rem; line-height: 1.5; color: #475569; padding-left: 18px; margin-bottom: 0; margin-top: 5px;">
+<li style="margin-bottom: 4px;">Naviguez vers l'onglet <b>Diagnostic Individuel</b> pour ajuster les 30 curseurs de mesures cellulaires.</li>
+<li style="margin-bottom: 4px;">Utilisez l'un des <b>presets de la console</b> à gauche ("Exemple Bénin", "Exemple Malin") pour importer en un clic des profils patients réels.</li>
+<li>Sélectionnez l'onglet <b>Diagnostic en Lot</b> pour soumettre directement un fichier de données CSV complet et en extraire le diagnostic groupé.</li>
+</ul>
+</div>
+</div>""", unsafe_allow_html=True)
             
     with tab_single:
         # Division de l'espace principal
