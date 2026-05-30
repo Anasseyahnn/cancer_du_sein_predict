@@ -34,47 +34,14 @@ def add_sidebar():
     st.sidebar.markdown("""
     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-        <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">Paramètres des Nuclei</span>
+        <span style="font-size: 1.1rem; font-weight: 700; color: #1e293b;">Console de Contrôle</span>
     </div>
     """, unsafe_allow_html=True)
     
-    slider_labels = [
-        ("Rayon (Moyenne)","radius_mean"),
-        ("Texture (Moyenne)", "texture_mean"),
-        ("Périmètre (Moyenne)", "perimeter_mean"),
-        ("Aire (Moyenne)","area_mean"),
-        ("Lissage (Moyenne)","smoothness_mean"),
-        ("Compacité (Moyenne)", "compactness_mean"),
-        ("Concavité (Moyenne)","concavity_mean"),
-        ("Points Concaves (Moyenne)","concave points_mean"),
-        ("Symétrie (Moyenne)","symmetry_mean"),
-        ("Dim. Fractale (Moyenne)","fractal_dimension_mean"),
-        ("Rayon (Erreur Std)","radius_se"),
-        ("Texture (Erreur Std)","texture_se"),
-        ("Périmètre (Erreur Std)","perimeter_se"),
-        ("Aire (Erreur Std)","area_se"),
-        ("Lissage (Erreur Std)", "smoothness_se"),
-        ("Compacité (Erreur Std)", "compactness_se"),
-        ("Concavité (Erreur Std)","concavity_se"),
-        ("Points Concaves (Erreur Std)","concave points_se"),
-        ("Symétrie (Erreur Std)","symmetry_se"), 
-        ("Dim. Fractale (Erreur Std)","fractal_dimension_se"),
-        ("Rayon (Pire)","radius_worst"),
-        ("Texture (Pire)","texture_worst"),
-        ("Périmètre (Pire)","perimeter_worst"),
-        ("Aire (Pire)","area_worst"),
-        ("Lissage (Pire)","smoothness_worst"),
-        ("Compacité (Pire)","compactness_worst"),
-        ("Concavité (Pire)","concavity_worst"),
-        ("Points Concaves (Pire)","concave points_worst"),
-        ("Symétrie (Pire)","symmetry_worst"),
-        ("Dim. Fractale (Pire)","fractal_dimension_worst"),
-    ]
-    
     # Boutons d'exemples cliniques interactifs
-    st.sidebar.write("**Scénarios Cliniques Pré-chargés :**")
-    col_benign, col_malignant = st.sidebar.columns(2)
+    st.sidebar.markdown("<div style='font-size:0.8rem; text-transform:uppercase; color:#64748b; font-weight:700; letter-spacing:0.05em; margin-bottom:8px;'>Cas Cliniques Prédéfinis :</div>", unsafe_allow_html=True)
     
+    col_benign, col_malignant = st.sidebar.columns(2)
     with col_benign:
         if st.sidebar.button("Exemple Bénin 🛡️", use_container_width=True, key="side_btn_benign"):
             benign_samples = data[data['diagnosis'] == 0]
@@ -97,7 +64,7 @@ def add_sidebar():
                 
     col_random, col_reset = st.sidebar.columns(2)
     with col_random:
-        if st.sidebar.button("Échantillon Aléatoire 🎲", use_container_width=True, key="side_btn_random"):
+        if st.sidebar.button("Cas Aléatoire 🎲", use_container_width=True, key="side_btn_random"):
             sample = data.sample(1).iloc[0]
             for col in data.columns:
                 if col != 'diagnosis':
@@ -113,17 +80,91 @@ def add_sidebar():
             
     st.sidebar.markdown("---")
     
-    # Rendu des sliders dynamiques basés sur la session state
+    # Catégorisation des curseurs dans la sidebar pour la rendre intéressante
+    st.sidebar.markdown("<div style='font-size:0.8rem; text-transform:uppercase; color:#64748b; font-weight:700; letter-spacing:0.05em; margin-bottom:8px;'>Groupes de Paramètres :</div>", unsafe_allow_html=True)
+    
+    slider_labels_mean = [
+        ("Rayon (Moyenne)","radius_mean"),
+        ("Texture (Moyenne)", "texture_mean"),
+        ("Périmètre (Moyenne)", "perimeter_mean"),
+        ("Aire (Moyenne)","area_mean"),
+        ("Lissage (Moyenne)","smoothness_mean"),
+        ("Compacité (Moyenne)", "compactness_mean"),
+        ("Concavité (Moyenne)","concavity_mean"),
+        ("Points Concaves (Moyenne)","concave points_mean"),
+        ("Symétrie (Moyenne)","symmetry_mean"),
+        ("Dim. Fractale (Moyenne)","fractal_dimension_mean"),
+    ]
+    
+    slider_labels_se = [
+        ("Rayon (Erreur Std)","radius_se"),
+        ("Texture (Erreur Std)","texture_se"),
+        ("Périmètre (Erreur Std)","perimeter_se"),
+        ("Aire (Erreur Std)","area_se"),
+        ("Lissage (Erreur Std)", "smoothness_se"),
+        ("Compacité (Erreur Std)", "compactness_se"),
+        ("Concavité (Erreur Std)","concavity_se"),
+        ("Points Concaves (Erreur Std)","concave points_se"),
+        ("Symétrie (Erreur Std)","symmetry_se"), 
+        ("Dim. Fractale (Erreur Std)","fractal_dimension_se"),
+    ]
+    
+    slider_labels_worst = [
+        ("Rayon (Pire)","radius_worst"),
+        ("Texture (Pire)","texture_worst"),
+        ("Périmètre (Pire)","perimeter_worst"),
+        ("Aire (Pire)","area_worst"),
+        ("Lissage (Pire)","smoothness_worst"),
+        ("Compacité (Pire)","compactness_worst"),
+        ("Concavité (Pire)","concavity_worst"),
+        ("Points Concaves (Pire)","concave points_worst"),
+        ("Symétrie (Pire)","symmetry_worst"),
+        ("Dim. Fractale (Pire)","fractal_dimension_worst"),
+    ]
+    
     input_dict = {}
-    for label, key in slider_labels:
-        session_key = f"slider_{key}"
-        input_dict[key] = st.sidebar.slider(
-            label, 
-            min_value=float(0),
-            max_value=float(data[key].max()),
-            value=st.session_state[session_key],
-            key=session_key
-        )
+    
+    # Groupe 1 : Mesures Moyennes (Mean)
+    with st.sidebar.expander("📐 Dimensions Moyennes (Mean)", expanded=True):
+        st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Mesures physiques et géométriques principales des noyaux.</p>", unsafe_allow_html=True)
+        for label, key in slider_labels_mean:
+            session_key = f"slider_{key}"
+            input_dict[key] = st.slider(
+                label, 
+                min_value=float(0),
+                max_value=float(data[key].max()),
+                value=st.session_state[session_key],
+                key=session_key
+            )
+            st.session_state[key] = input_dict[key]
+            
+    # Groupe 2 : Variations et Erreurs Standards (SE)
+    with st.sidebar.expander("📉 Variations & Écarts (SE)", expanded=False):
+        st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Variabilité et erreurs types mesurées d'une cellule à l'autre.</p>", unsafe_allow_html=True)
+        for label, key in slider_labels_se:
+            session_key = f"slider_{key}"
+            input_dict[key] = st.slider(
+                label, 
+                min_value=float(0),
+                max_value=float(data[key].max()),
+                value=st.session_state[session_key],
+                key=session_key
+            )
+            st.session_state[key] = input_dict[key]
+            
+    # Groupe 3 : Pires Scénarios (Worst)
+    with st.sidebar.expander("🚨 Valeurs Extrêmes (Worst)", expanded=False):
+        st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Les plus grandes valeurs mesurées, indiquant l'irrégularité maximale.</p>", unsafe_allow_html=True)
+        for label, key in slider_labels_worst:
+            session_key = f"slider_{key}"
+            input_dict[key] = st.slider(
+                label, 
+                min_value=float(0),
+                max_value=float(data[key].max()),
+                value=st.session_state[session_key],
+                key=session_key
+            )
+            st.session_state[key] = input_dict[key]
         
     return input_dict
 
@@ -369,10 +410,7 @@ def main():
                 model = pickle.load(open(model_path, "rb"))
                 scaler = pickle.load(open(scaler_path, "rb"))
                 
-                # Identifier les colonnes nécessaires (en ignorant d'éventuelles colonnes ID ou Diagnostic pré-existantes)
-                predict_cols = [c for c in input_df.columns if c not in ['id', 'diagnosis', 'Unnamed: 32']]
-                
-                # Vérifier que toutes les 30 caractéristiques requises sont présentes
+                # Identifier les colonnes nécessaires
                 required_cols = list(data.columns)
                 required_cols.remove('diagnosis')
                 
