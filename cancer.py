@@ -10,7 +10,10 @@ import pickle as pickle
 
 # obtenion de la table de donnees et netoyage
 def get_clean_data():
-    data = pd.read_csv("c:/Users/Yahnn/Documents/GitHub/Anasseyahnn/posts/dashboard/data.csv")
+    import os
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(base_dir, "data.csv")
+    data = pd.read_csv(data_path)
     
     # supression des colonnes id et unnamaed
     data = data.drop(["id","Unnamed: 32"], axis = 1)

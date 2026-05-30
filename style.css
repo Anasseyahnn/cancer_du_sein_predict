@@ -1,20 +1,86 @@
-.css-j5r0tf {
-  padding: 1rem;
-  border-radius: 5rem;
-  background-color: #add8e6;
+/* Styles Premium - Diagnostic du Cancer du Sein */
+
+/* Importation Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* Masquage éléments par défaut Streamlit */
+header {visibility: hidden !important;}
+footer {visibility: hidden !important;}
+
+/* Style général */
+html, body, [data-testid="stAppViewContainer"] {
+    background-color: #f8fafc !important;
+    background-image: radial-gradient(at 0% 0%, rgba(244, 63, 94, 0.03) 0px, transparent 50%),
+                      radial-gradient(at 100% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%) !important;
+    color: #334155 !important;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
 }
 
-.diagnosis {
-  color: #fff;
-  padding: 0.2em 0.5em;
-  border-radius: 0.5em;
+/* Sidebar styling */
+[data-testid="stSidebar"] {
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
 }
 
-.diagnosis.benign {
-  background-color: #01DB4B
+[data-testid="stSidebar"] h2 {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 1.25rem !important;
+    letter-spacing: -0.02em !important;
 }
 
-.diagnosis.malicious {
-  background-color: #ff4b4b
-} 
+/* Cards et conteneurs */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
+}
 
+/* Diagnostic badges style */
+.diagnosis-card {
+    border-radius: 12px !important;
+    padding: 20px !important;
+    margin-top: 15px !important;
+    border: 1px solid transparent !important;
+}
+
+.diagnosis-card.benign {
+    background-color: rgba(16, 185, 129, 0.08) !important;
+    border-color: rgba(16, 185, 129, 0.15) !important;
+    color: #065f46 !important;
+}
+
+.diagnosis-card.malicious {
+    background-color: rgba(244, 63, 94, 0.08) !important;
+    border-color: rgba(244, 63, 94, 0.15) !important;
+    color: #9f1239 !important;
+}
+
+.diagnosis-title {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    margin-bottom: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+}
+
+.diagnosis-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.5 !important;
+    color: inherit !important;
+    opacity: 0.9 !important;
+}
+
+/* Curseurs de la sidebar */
+.stSlider {
+    padding-bottom: 12px !important;
+}
+
+/* Discrets séparateurs */
+hr {
+    margin: 15px 0 25px 0 !important;
+    border: 0 !important;
+    border-top: 1px solid #e2e8f0 !important;
+}
