@@ -3,8 +3,16 @@
 /* Importation Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
-/* Masquage éléments par défaut Streamlit */
-header {visibility: hidden !important;}
+/* Masquage ciblé des boutons Streamlit (Conserve le bouton d'ouverture du menu latéral) */
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+[data-testid="stMainMenu"] {
+    visibility: hidden !important;
+}
+[data-testid="stStatusWidget"] {
+    visibility: hidden !important;
+}
 footer {visibility: hidden !important;}
 
 /* Style général */
