@@ -43,7 +43,7 @@ def add_sidebar():
     
     col_benign, col_malignant = st.sidebar.columns(2)
     with col_benign:
-        if st.sidebar.button("Exemple Bénin 🛡️", use_container_width=True, key="side_btn_benign"):
+        if st.sidebar.button("Exemple Bénin", use_container_width=True, key="side_btn_benign"):
             benign_samples = data[data['diagnosis'] == 0]
             if not benign_samples.empty:
                 sample = benign_samples.sample(1).iloc[0]
@@ -53,7 +53,7 @@ def add_sidebar():
                 st.rerun()
                 
     with col_malignant:
-        if st.sidebar.button("Exemple Malin ⚠️", use_container_width=True, key="side_btn_malignant"):
+        if st.sidebar.button("Exemple Malin", use_container_width=True, key="side_btn_malignant"):
             malignant_samples = data[data['diagnosis'] == 1]
             if not malignant_samples.empty:
                 sample = malignant_samples.sample(1).iloc[0]
@@ -64,7 +64,7 @@ def add_sidebar():
                 
     col_random, col_reset = st.sidebar.columns(2)
     with col_random:
-        if st.sidebar.button("Cas Aléatoire 🎲", use_container_width=True, key="side_btn_random"):
+        if st.sidebar.button("Cas Aléatoire", use_container_width=True, key="side_btn_random"):
             sample = data.sample(1).iloc[0]
             for col in data.columns:
                 if col != 'diagnosis':
@@ -72,7 +72,7 @@ def add_sidebar():
             st.rerun()
             
     with col_reset:
-        if st.sidebar.button("Moyennes 🔄", use_container_width=True, key="side_btn_reset"):
+        if st.sidebar.button("Moyennes", use_container_width=True, key="side_btn_reset"):
             for col in data.columns:
                 if col != 'diagnosis':
                     st.session_state[f"slider_{col}"] = float(data[col].mean())
@@ -125,7 +125,7 @@ def add_sidebar():
     input_dict = {}
     
     # Groupe 1 : Mesures Moyennes (Mean)
-    with st.sidebar.expander("📐 Dimensions Moyennes (Mean)", expanded=True):
+    with st.sidebar.expander("Dimensions Moyennes (Mean)", expanded=True):
         st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Mesures physiques et géométriques principales des noyaux.</p>", unsafe_allow_html=True)
         for label, key in slider_labels_mean:
             session_key = f"slider_{key}"
@@ -139,7 +139,7 @@ def add_sidebar():
             st.session_state[key] = input_dict[key]
             
     # Groupe 2 : Variations et Erreurs Standards (SE)
-    with st.sidebar.expander("📉 Variations & Écarts (SE)", expanded=False):
+    with st.sidebar.expander("Variations & Écarts (SE)", expanded=False):
         st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Variabilité et erreurs types mesurées d'une cellule à l'autre.</p>", unsafe_allow_html=True)
         for label, key in slider_labels_se:
             session_key = f"slider_{key}"
@@ -153,7 +153,7 @@ def add_sidebar():
             st.session_state[key] = input_dict[key]
             
     # Groupe 3 : Pires Scénarios (Worst)
-    with st.sidebar.expander("🚨 Valeurs Extrêmes (Worst)", expanded=False):
+    with st.sidebar.expander("Valeurs Extrêmes (Worst)", expanded=False):
         st.markdown("<p style='font-size:0.75rem; color:#64748b; margin-top:0;'>Les plus grandes valeurs mesurées, indiquant l'irrégularité maximale.</p>", unsafe_allow_html=True)
         for label, key in slider_labels_worst:
             session_key = f"slider_{key}"
@@ -293,14 +293,20 @@ def add_predictions(input_data):
     if prediction[0] == 1:
         st.markdown(f"""
         <div class="diagnosis-card malicious">
-            <div class="diagnosis-title">⚠️ Tumeur Maligne Détectée</div>
+            <div class="diagnosis-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                Tumeur Maligne Détectée
+            </div>
             <div class="diagnosis-desc">Les caractéristiques des noyaux cellulaires saisies indiquent de fortes similitudes avec des échantillons malins (cancer du sein).</div>
         </div>
         """, unsafe_allow_html=True)
     else:
         st.markdown(f"""
         <div class="diagnosis-card benign">
-            <div class="diagnosis-title">🛡️ Tumeur Bénigne Détectée</div>
+            <div class="diagnosis-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Tumeur Bénigne Détectée
+            </div>
             <div class="diagnosis-desc">Les caractéristiques des noyaux cellulaires saisies indiquent des similitudes avec des échantillons sains ou non cancéreux.</div>
         </div>
         """, unsafe_allow_html=True)
@@ -325,7 +331,7 @@ def add_predictions(input_data):
 def main():
     st.set_page_config(
         page_title="Diagnostic Prédictif - Cancer du Sein",
-        page_icon="⚖️",
+        page_icon=":microscope:",
         layout='wide',
         initial_sidebar_state='expanded'
     )
